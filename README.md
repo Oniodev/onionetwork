@@ -148,4 +148,4 @@ poetry run pytest
 
 ## License
 
-Onionetwork is licensed under the GPL v3. See [LICENSE](LICENSE) for details.
+Onionetwork is licensed under the MIT. See [LICENSE](LICENSE) for details.
