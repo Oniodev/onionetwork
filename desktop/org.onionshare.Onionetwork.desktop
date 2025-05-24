@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=Onionetwork
+GenericName=Onionetwork Client
+Comment=Share files, host websites, and chat anonymously over the Tor network
+Icon=org.onionetwork.onionetwork
+Exec=onionetwork
+Terminal=false
+Type=Application
+Categories=Network;FileTransfer;
+Keywords=tor;anonymity;privacy;onion service;file sharing;file hosting;
+StartupNotify=true
+StartupWMClass=onionetwork

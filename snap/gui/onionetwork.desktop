@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Onionetwork
+Exec=onionetwork
+Terminal=false
+Type=Application
+Icon=${SNAP}/meta/gui/onionetwork.svg
+Categories=Network;FileTransfer;
+Keywords=tor;anonymity;privacy;onion service;file sharing;file hosting;
+StartupNotify=true
+StartupWMClass=onionetwork

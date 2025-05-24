@@ -1,0 +1,64 @@
+__pycache__
+*.py[cod]
+
+# C extensions
+*.so
+
+# Packages
+*.egg
+*.egg-info
+*.eggs
+dist
+deb_dist
+build
+_build
+eggs
+parts
+var
+sdist
+develop-eggs
+.installed.cfg
+MANIFEST
+env
+onionetwork-*.tar.gz
+onionetwork_*.snap
+.flatpak-builder
+onionetwork.flatpak
+
+# Installer logs
+pip-log.txt
+
+# Unit test / coverage reports
+.coverage
+.tox
+nosetests.xml
+.cache
+.pytest_cache
+
+# Translations
+*.mo
+
+# Mr Developer
+.mr.developer.cfg
+.project
+.pydevproject
+
+# vim
+*.swp
+
+# tags
+ctags
+tags
+
+# OSX
+.DS_Store
+
+# virtualenv
+venv
+
+# other
+.vscode
+.python-version
+onionetwork.dist-info
+desktop/onionetwork/resources/tor
+TODO*

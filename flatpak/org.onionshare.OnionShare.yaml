@@ -1,0 +1,158 @@
+---
+app-id: org.onionetwork.onionetwork
+command: onionetwork
+runtime: org.kde.Platform
+runtime-version: "6.8"
+sdk: org.kde.Sdk
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.golang
+  - org.freedesktop.Sdk.Extension.llvm19
+separate-locales: false
+finish-args:
+  - "--device=dri"
+  - "--share=ipc"
+  - "--share=network"
+  - "--socket=wayland"
+  - "--socket=fallback-x11"
+  - "--talk-name=org.freedesktop.Notifications"
+  - "--talk-name=org.freedesktop.secrets"
+  - "--filesystem=~/onionetwork:create"
+cleanup:
+  - "/go"
+  - "/bin/scripts"
+modules:
+  - name: pyside6
+    buildsystem: simple
+    build-commands: []
+    modules:
+      - name: pyside6-essentials
+        only-arches:
+          - x86_64
+        buildsystem: simple
+        build-commands:
+          - pip3 install --verbose --exists-action=i --no-index --find-links="file://${PWD}"
+            --prefix=${FLATPAK_DEST} "pyside6-essentials" --no-build-isolation
+        sources:
+          - type: file
+            url: https://files.pythonhosted.org/packages/d2/f9/aa4ff511ff1f3dd177f7e8f5a635e03fe578fa2045c8d6be4577e7db3b28/PySide6_Essentials-6.8.2.1-cp39-abi3-manylinux_2_28_x86_64.whl
+            sha256: 5ab31e5395a4724102edd6e8ff980fa3f7cde2aa79050763a1dcc30bb914195a
+        modules:
+          - name: shiboken6
+            buildsystem: simple
+            build-commands:
+              - pip3 install --verbose --exists-action=i --no-index --find-links="file://${PWD}"
+                --prefix=${FLATPAK_DEST} "shiboken6" --no-build-isolation
+            sources:
+              - type: file
+                url: https://files.pythonhosted.org/packages/7b/ff/ab4f287b9573e50b5a47c10e2af8feb5abecc3c7431bd5deec135efc969e/shiboken6-6.8.2.1-cp39-abi3-manylinux_2_28_x86_64.whl
+                sha256: c83e90056f13d0872cc4d2b7bf60b6d6e3b1b172f1f91910c0ba5b641af01758
+      - name: pyside6-essentials-aarch64
+        only-arches:
+          - aarch64
+        buildsystem: simple
+        build-commands:
+          - pip3 install --verbose --exists-action=i --no-index --find-links="file://${PWD}"
+            --prefix=${FLATPAK_DEST} "pyside6-essentials" --no-build-isolation
+        sources:
+          - type: file
+            url: https://files.pythonhosted.org/packages/fd/69/595002d860ee58431fe7add081d6f54fff94ae9680f2eb8cd355c1649bb6/PySide6_Essentials-6.8.2.1-cp39-abi3-manylinux_2_39_aarch64.whl
+            sha256: 7aed46f91d44399b4c713cf7387f5fb6f0114413fbcdbde493a528fb8e19f6ed
+        modules:
+          - name: shiboken6
+            buildsystem: simple
+            build-commands:
+              - pip3 install --verbose --exists-action=i --no-index --find-links="file://${PWD}"
+                --prefix=${FLATPAK_DEST} "shiboken6" --no-build-isolation
+            sources:
+              - type: file
+                url: https://files.pythonhosted.org/packages/a6/b0/4fb102eb5260ee06d379769f3c4f0b82ef397c15f1cbbbbb3f6dceb86d5d/shiboken6-6.8.2.1-cp39-abi3-manylinux_2_39_aarch64.whl
+                sha256: 8592401423acc693f51dbbfae5e7493cc3ed6738be79daaf90afa07f4da5bb25
+  - name: snowflake-client
+    buildsystem: simple
+    build-options:
+      append-path: /usr/lib/sdk/golang/bin
+      env:
+        GOBIN: "/app/bin/"
+        GO11MODULE: on
+        GOROOT: /usr/lib/sdk/golang
+    build-commands:
+      - ". /usr/lib/sdk/golang/enable.sh && go build -mod=vendor -o /app/bin/snowflake-client ./client"
+    sources:
+      - type: git
+        url: https://gitlab.torproject.org/tpo/anti-censorship/pluggable-transports/snowflake.git
+        tag: v2.10.1
+      - snowflake/go.mod.yml
+  - name: obfs4proxy
+    buildsystem: simple
+    build-options:
+      append-path: /usr/lib/sdk/golang/bin
+      env:
+        GOBIN: "/app/bin/"
+        GO11MODULE: on
+        GOROOT: /usr/lib/sdk/golang
+    build-commands:
+      - ". /usr/lib/sdk/golang/enable.sh && go build -mod=vendor -o /app/bin/obfs4proxy ./obfs4proxy"
+    sources:
+      - type: git
+        url: https://gitlab.com/yawning/obfs4.git
+        tag: obfs4proxy-0.0.14
+      - obfs4proxy/go.mod.yml
+  - name: meek-client
+    buildsystem: simple
+    build-options:
+      append-path: /usr/lib/sdk/golang/bin
+      env:
+        GOBIN: "/app/bin/"
+        GO11MODULE: on
+        GOROOT: /usr/lib/sdk/golang
+    build-commands:
+      - ". /usr/lib/sdk/golang/enable.sh && go build -mod=vendor -o /app/bin/meek-client ./meek-client"
+    sources:
+      - type: git
+        url: https://gitlab.torproject.org/tpo/anti-censorship/pluggable-transports/meek.git
+        tag: v0.38.0
+      - meek-client/go.mod.yml
+  - name: tor
+    buildsystem: autotools
+    sources:
+      - type: archive
+        sha256: 5047e1ded12d9aac4eb858f7634a627714dd58ce99053d517691a4b304a66d10
+        url: https://dist.torproject.org/tor-0.4.8.14.tar.gz
+    modules:
+      - name: libevent
+        buildsystem: autotools
+        sources:
+          - type: archive
+            url: https://github.com/libevent/libevent/releases/download/release-2.1.12-stable/libevent-2.1.12-stable.tar.gz
+            sha256: 92e6de1be9ec176428fd2367677e61ceffc2ee1cb119035037a27d346b0403bb
+  - name: onionetwork
+    buildsystem: simple
+    ensure-writable:
+      - easy-install.pth
+    build-commands:
+      - rm desktop/pyproject.toml
+      - cd desktop && pip3 install --prefix=${FLATPAK_DEST} .
+      - cd desktop && install -D -m0644 org.onionetwork.onionetwork.appdata.xml ${FLATPAK_DEST}/share/metainfo/${FLATPAK_ID}.appdata.xml
+      - cd desktop && install -D -m0644 org.onionetwork.onionetwork.svg ${FLATPAK_DEST}/share/icons/hicolor/scalable/apps/org.onionetwork.onionetwork.svg
+      - cd desktop && install -D -m0644 org.onionetwork.onionetwork.desktop ${FLATPAK_DEST}/share/applications/${FLATPAK_ID}.desktop
+    sources:
+      - type: dir
+        path: ..
+      # - type: git
+      #   url: https://github.com/onionetwork/onionetwork.git
+      #   tag: v2.6.3
+    modules:
+      - onionetwork-desktop.yaml
+      - name: onionetwork-cli
+        buildsystem: simple
+        build-commands:
+          - rm cli/pyproject.toml
+          - cd cli && pip3 install --prefix=${FLATPAK_DEST} --no-deps .
+        sources:
+          - type: dir
+            path: ..
+        #   - type: git
+        #     url: https://github.com/onionetwork/onionetwork.git
+        #     tag: v2.6.3
+        modules:
+          - onionetwork-cli.yaml

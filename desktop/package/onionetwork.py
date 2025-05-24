@@ -1,0 +1,3 @@
+import onionetwork
+
+onionetwork.main()
