@@ -1,8 +1,8 @@
 ![Onionetwork](logo.png)
 
-# Onionetwork
-
 Onionetwork is an open source tool that lets you securely and anonymously share files, host websites, and chat with friends using the Tor network.
+
+![Demo][demo.gif]
 
 ## Quick Installation
 
